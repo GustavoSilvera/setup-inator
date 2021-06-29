@@ -14,13 +14,16 @@ APT_PKGS=(
     "git"
     "tree"
     "tmux"
+    "curl"
     "neofetch"
     "htop"
     "emacs-nox"
-	"terminator"
+    "terminator"
+    "zsh"
+    "chromium-browser"
 )
 
-run_install "sudo apt install -y" ${APT_PKGS}
+run_install "sudo apt install -y" ${APT_PKGS[@]}
 
 # install packaged through git
 ZSH_REPOS=( # insert username/reponame
@@ -29,8 +32,20 @@ ZSH_REPOS=( # insert username/reponame
     "zdharma/fast-syntax-highlighting"
 )
 
-run_git_cloner ${ZSH_REPOS}
+run_git_cloner ${ZSH_REPOS[@]}
 
-install_zsh ${HOME}
+install_zsh_plugins ${HOME}
+
+# formatted as (single str) "link,resulting_name"
+DOWNLOAD_LINKS=(
+    "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64,vscode"
+    
+)
+
+download_files ${DOWNLOAD_LINKS[@]}
+
+for deb_file in ./downloaded_files/*.deb ; do
+    sudo apt install ${deb_file}
+done
 
 cd .. # back to main dir
