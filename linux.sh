@@ -15,26 +15,38 @@ APT_PKGS=(
     "tree"
     "tmux"
     "curl"
+    "gawk"
     "neofetch"
     "htop"
     "emacs-nox"
     "terminator"
     "zsh"
     "chromium-browser"
+    "timeshift"
+    "fonts-firacode"
 )
 
 run_install "sudo apt install -y" ${APT_PKGS[@]}
+
+# update terminator config
+echo -e "${CYAN}Updating terminator config${NC}"
+mkdir -p $HOME/.config/terminator/ # make if doesn't already exist
+cp ../configs/terminator/config $HOME/.config/terminator/
+
 
 # install packaged through git
 ZSH_REPOS=( # insert username/reponame
     "ohmyzsh/ohmyzsh"
     "zsh-users/zsh-autosuggestions"
     "zdharma/fast-syntax-highlighting"
+    "spaceship-prompt/spaceship-prompt"
 )
 
 run_git_cloner ${ZSH_REPOS[@]}
 
 install_zsh_plugins ${HOME}
+
+install_zsh_theme ${HOME}
 
 # formatted as (single str) "link,resulting_name"
 DOWNLOAD_LINKS=(
