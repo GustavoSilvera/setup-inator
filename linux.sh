@@ -33,6 +33,17 @@ echo -e "${CYAN}Updating terminator config${NC}"
 mkdir -p $HOME/.config/terminator/ # make if doesn't already exist
 cp ../configs/terminator/config $HOME/.config/terminator/
 
+# formatted as (single str) "link,resulting_name"
+DOWNLOAD_LINKS=(
+    "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64,vscode"
+    
+)
+
+download_files ${DOWNLOAD_LINKS[@]}
+
+for deb_file in ./downloaded_files/*.deb ; do
+    sudo apt install ${deb_file}
+done
 
 # install packaged through git
 ZSH_REPOS=( # insert username/reponame
@@ -46,18 +57,7 @@ run_git_cloner ${ZSH_REPOS[@]}
 
 install_zsh_plugins ${HOME}
 
+# run zsh installer last since it closes the script for me :)
 install_zsh_theme ${HOME}
-
-# formatted as (single str) "link,resulting_name"
-DOWNLOAD_LINKS=(
-    "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64,vscode"
-    
-)
-
-download_files ${DOWNLOAD_LINKS[@]}
-
-for deb_file in ./downloaded_files/*.deb ; do
-    sudo apt install ${deb_file}
-done
 
 cd .. # back to main dir
