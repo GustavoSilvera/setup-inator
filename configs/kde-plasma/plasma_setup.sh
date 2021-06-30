@@ -26,4 +26,4 @@ PAPIRUS_REPOS=(
 )
 run_git_cloner ${PAPIRUS_REPOS[@]}
 
-cp -r git_repos/Papirus-Dark/ ~/.local/share/icons/
+cp -r git_repos/papirus-icon-theme/Papirus-Dark/ ~/.local/share/icons/

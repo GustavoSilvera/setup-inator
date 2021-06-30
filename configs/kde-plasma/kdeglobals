@@ -112,7 +112,7 @@ DirSelectDialog Size=844,598
 History Items[$e]=
 
 [General]
-BrowserApplication=chromium.desktop
+BrowserApplication=chromium_chromium.desktop
 ColorScheme=DarkGoose
 Name=Breeze Dark
 TerminalApplication[$e]=terminator
