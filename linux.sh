@@ -24,6 +24,9 @@ APT_PKGS=(
     "chromium-browser"
     "timeshift"
     "fonts-firacode"
+    "cmake"
+    "clang"
+    "g++"
 )
 
 run_install "sudo apt install -y" ${APT_PKGS[@]}

@@ -20,10 +20,5 @@ cp ./kwinrulesrc ~/.config/
 mkdir -p ~/Pictures/Wallpapers/
 cp ./icecold2.png ~/Pictures/Wallpapers/
 
-# install papirus
-PAPIRUS_REPOS=(
-	"PapirusDevelopmentTeam/papirus-icon-theme"
-)
-run_git_cloner ${PAPIRUS_REPOS[@]}
-
-cp -r git_repos/papirus-icon-theme/Papirus-Dark/ ~/.local/share/icons/
+# copy over profile pic
+cp ../profile.png ~/Picures/
