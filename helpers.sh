@@ -1,12 +1,26 @@
 #!/bin/bash
 
 RED='\033[0;31m'
+YELLOW='\033[0;33m'
 GREEN='\033[0;32m'
 CYAN='\033[0;36m'
+BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
 NC='\033[0m'
 
 # Exit immediately when failing to install a package
 set -e
+
+get_arch() {
+	ARCH=
+	ARCH_FULL=`uname -s`-`uname -p`
+	if [[ ${ARCH_FULL} =~ "arm" ]]; then
+		ARCH="arm"
+	elif [[ ${ARCH_FULL} =~ "x86" ]]; then 
+		ARCH="x86"
+	fi
+	echo ${ARCH}
+}
 
 run_install() {
 	# expects arg 1 to be the installer cmd as a string
@@ -14,10 +28,16 @@ run_install() {
 	INSTALLER=$1
 	shift # shift all arguments to the left
 	PKGS=("$@")
-	echo -e "${CYAN}Starting \"${INSTALLER}\" installation process ${NC}"
+	echo -e "${CYAN}Starting \"${INSTALLER}\" installation process ${NC}" 
 	for i in ${PKGS[@]} ; do
-	    eval ${INSTALLER} $i || (echo -e "${RED}Failed installing $i ${NC}" && exit 1)
-		echo -e "${GREEN}Successfully installed $i ${NC}"
+		read -p "$(echo -e ${YELLOW}"Do you want to install ${i}?(y/n) "${NC})" -n 1 -r CONFIRM
+		echo # move cursor to a new line
+		if [[ ${CONFIRM} =~ ^[Yy]$ ]]; then
+			eval ${INSTALLER} $i || (echo -e "${RED}Failed installing $i ${NC}" && exit 1)
+			echo -e "${GREEN}Successfully installed $i ${NC}"
+		else
+			echo -e "${BLUE}Skipping installation of ${i}${NC}"
+		fi
 	done
 }
 
@@ -90,19 +110,34 @@ install_zsh_theme() {
 }
 
 download_files() {
-    mkdir -p downloaded_files
-    cd downloaded_files
+	OUT_DIR=$1
+	shift # skip 1st arg (directory)
+    mkdir -p ${OUT_DIR}
+    cd ${OUT_DIR}
     DOWNLOAD_TUPLES=($@)
     for link_name_tuple in ${DOWNLOAD_TUPLES[@]} ; do
-	LINK=$(cut -d',' -f1 <<<"${link_name_tuple}")
-	NAME=$(cut -d',' -f2 <<<"${link_name_tuple}") 
-	if [ ! -f "./${NAME}.deb" ]
-	then
-	    echo -e "${CYAN}Downloading to \"${NAME}.deb\"${NC}"
-	    wget ${LINK} -O ${NAME}.deb
-	else
-		echo -e "${GREEN}Skipping download of \"${NAME}\". Already downloaded.${NC}"
-	fi
+		LINK=$(cut -d',' -f1 <<<"${link_name_tuple}")
+		NAME=$(cut -d',' -f2 <<<"${link_name_tuple}") 
+		if [ ! -f "./${NAME}.deb" ]
+		then
+			read -p "$(echo -e ${YELLOW}"Do you want to download ${NAME} deb from ${LINK}?(y/n) "${NC})" -n 1 -r CONFIRM
+			echo    # (optional) move to a new line
+			if [[ ${CONFIRM} =~ ^[Yy]$ ]]; then
+				echo -e "${CYAN}Downloading to \"${NAME}.deb\"${NC}"
+				wget ${LINK} -O ${NAME}.deb
+			else
+				echo -e "${BLUE}Skipping debfile installation of ${i}${NC}"
+			fi
+		else
+			echo -e "${GREEN}Skipping download of \"${NAME}\". Already downloaded.${NC}"
+		fi
     done
     cd ..
+}
+
+install_from_deb() {
+	DEB_DIR=deb_files
+	download_files ${DEB_DIR} "$@" # download all files
+	all_debs=`ls ./${DEB_DIR}/*.deb` # get all downloaded files
+	run_install "sudo apt -y install" ${all_debs[@]}
 }

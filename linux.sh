@@ -5,6 +5,9 @@ source ./helpers.sh
 
 HOME="/home/$USER"
 
+ARCH=$(get_arch)
+echo -e "${BLUE}Setting up ${ARCH} based Linux system...${NC}"
+
 mkdir -p setup_linux
 cd setup_linux
 
@@ -37,16 +40,21 @@ mkdir -p $HOME/.config/terminator/ # make if doesn't already exist
 cp ../configs/terminator/config $HOME/.config/terminator/
 
 # formatted as (single str) "link,resulting_name"
-DOWNLOAD_LINKS=(
-    "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64,vscode"
-    
+X86_DOWNLOAD_LINKS=(
+    "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64,vscode"
+    "https://discord.com/api/download?platform=linux&format=deb,discord"
+    "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb,chrome"
 )
-
-download_files ${DOWNLOAD_LINKS[@]}
-
-for deb_file in ./downloaded_files/*.deb ; do
-    sudo apt install ${deb_file}
-done
+ARM_DOWNLOAD_LINKS=(
+    "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-arm64,vscode"
+)
+DOWNLOAD_LINKS=() # initially empty
+if [[ ${ARCH} == "arm" ]]; then
+    DOWNLOAD_LINKS=${ARM_DOWNLOAD_LINKS[@]}
+elif [[ ${ARCH} == "x86" ]]; then 
+    DOWNLOAD_LINKS=${X86_DOWNLOAD_LINKS[@]}
+fi
+install_from_deb ${DOWNLOAD_LINKS[@]}
 
 # install packaged through git
 ZSH_REPOS=( # insert username/reponame
