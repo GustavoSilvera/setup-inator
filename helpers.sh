@@ -11,6 +11,14 @@ NC='\033[0m'
 # Exit immediately when failing to install a package
 set -e
 
+# signal catching 
+trap ctrl_c INT
+ctrl_c() {
+	echo
+	echo -e "${RED}Caught interrupt. Goodbye.${NC}"
+	exit 1
+}
+
 get_arch() {
 	ARCH=
 	ARCH_FULL=`uname -s`-`uname -p`
