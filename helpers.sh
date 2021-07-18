@@ -23,6 +23,28 @@ get_arch() {
 }
 
 run_install() {
+	# NOTE: default behaviour is to do batch installation (faster)
+	# expects arg 1 to be the installer cmd as a string
+	# expects arg 2 to be all the packages to install
+	INSTALLER=$1
+	shift # shift all arguments to the left
+	PKGS=("$@")
+	echo -e "${CYAN}Starting \"${INSTALLER}\" installation process ${NC}" 
+	PKGS_TO_INSTALL=()
+	for PKG_NAME in ${PKGS[@]} ; do
+		read -p "$(echo -e ${YELLOW}"Do you want to install ${PKG_NAME}?(y/n) "${NC})" -n 1 -r CONFIRM
+		echo # move cursor to a new line
+		if [[ ${CONFIRM} =~ ^[Yy]$ ]]; then
+			PKGS_TO_INSTALL+=($PKG_NAME)
+		else
+			echo -e "${BLUE}Skipping installation of ${PKG_NAME}${NC}"
+		fi
+	done
+	# run a batch installation. Ex. works great with "sudo apt install X Y Z"
+	eval ${INSTALLER} ${PKGS_TO_INSTALL[@]} || (echo -e "${RED}Failed installation ${NC}" && exit 1)
+}
+
+run_install_individual() {
 	# expects arg 1 to be the installer cmd as a string
 	# expects arg 2 to be all the packages to install
 	INSTALLER=$1
