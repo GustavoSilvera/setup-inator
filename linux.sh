@@ -12,7 +12,13 @@ mkdir -p setup_linux
 cd setup_linux
 
 sudo apt update && sudo apt upgrade
-sudo apt --fix-broken -y install || (echo -e "${RED}Failed to fix broken install ${NC}" && exit 1)
+if [[ $? -ne 0 ]]; then
+    echo -e "${BLUE}Updating packages with pkcon${NC}"
+    pkcon refresh && pkcon update
+else
+    sudo apt --fix-broken -y install || (echo -e "${RED}Failed to fix broken install ${NC}" && exit 1)
+fi
+
 APT_PKGS=(
     "git"
     "tree"

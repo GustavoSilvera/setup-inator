@@ -8,9 +8,6 @@ BLUE='\033[0;34m'
 PURPLE='\033[0;35m'
 NC='\033[0m'
 
-# Exit immediately when failing to install a package
-set -e
-
 # signal catching 
 trap ctrl_c INT
 ctrl_c() {
