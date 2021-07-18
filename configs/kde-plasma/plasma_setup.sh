@@ -21,4 +21,4 @@ mkdir -p ~/Pictures/Wallpapers/
 cp ./icecold2.png ~/Pictures/Wallpapers/
 
 # copy over profile pic
-cp ../profile.png ~/Picures/
+cp ../profile.png ~/Pictures/

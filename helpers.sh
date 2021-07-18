@@ -160,6 +160,9 @@ download_files() {
 install_from_deb() {
 	DEB_DIR=deb_files
 	download_files ${DEB_DIR} "$@" # download all files
+	if [ -z "$(ls -A ./${DEB_DIR})" ]; then # check if no deb files were downloaded
+		return 0 # cleanly exit, nothing more to do. 
+	fi
 	all_debs=`ls ./${DEB_DIR}/*.deb` # get all downloaded files
 	run_install "sudo apt -y install" ${all_debs[@]}
 }
