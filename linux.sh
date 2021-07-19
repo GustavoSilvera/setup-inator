@@ -36,6 +36,8 @@ APT_PKGS=(
     "cmake"
     "clang"
     "g++"
+    "ffmpeg"
+    "pavucontrol"
 )
 
 run_install "sudo apt install -y" ${APT_PKGS[@]}
