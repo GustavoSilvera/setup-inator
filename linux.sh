@@ -30,7 +30,8 @@ APT_PKGS=(
     "emacs-nox"
     "terminator"
     "zsh"
-    "chromium-browser"
+    "eog"
+    "gnome-disk-utility"
     "timeshift"
     "fonts-firacode"
     "cmake"
@@ -68,7 +69,7 @@ install_from_deb ${DOWNLOAD_LINKS[@]}
 ZSH_REPOS=( # insert username/reponame
     "ohmyzsh/ohmyzsh"
     "zsh-users/zsh-autosuggestions"
-    "zdharma/fast-syntax-highlighting"
+    "zdharma-continuum/fast-syntax-highlighting"
     "spaceship-prompt/spaceship-prompt"
 )
 
