@@ -71,9 +71,9 @@ display=Display; Meta+P
 
 [kmix][Global Shortcuts]
 decrease_microphone_volume=Microphone Volume Down
-decrease_volume=Volume Down; F3
+decrease_volume=Volume Down
 increase_microphone_volume=Microphone Volume Up
-increase_volume=Volume Up; F4
+increase_volume=Volume Up
 mic_mute=Meta+Ctrl+M; Microphone Mute
 mute=Volume Mute
 
@@ -324,9 +324,9 @@ show-on-mouse-pos=
 [mediacontrol][Global Shortcuts]
 mediavolumedown=
 mediavolumeup=
-nextmedia=F10
-playpausemedia=F9
-previousmedia=F8
+nextmedia=Media Next
+playpausemedia=Media Play
+previousmedia=Media Previous
 stopmedia=
 
 [org.kde.dolphin.desktop][Global Shortcuts]
