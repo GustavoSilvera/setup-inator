@@ -118,3 +118,8 @@ function precmd() {
     unset timer
   fi
 }
+
+# address capitalization errors
+# https://superuser.com/questions/1092033/how-can-i-make-zsh-tab-completion-fix-capitalization-errors-for-directories-and
+autoload -Uz compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
