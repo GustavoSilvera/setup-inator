@@ -1,16 +1,13 @@
-export UE4_ROOT="/home/gustavo/Unreal/UE4/"
-export CARLA_ROOT="/home/gustavo/carla/carla/"
-
 # just git clone these into this location and source them here
-# source ~/.zsh/spaceship/spaceship.zsh # too slow!
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+# source $HOME/.zsh/spaceship/spaceship.zsh # too slow!
+source $HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $HOME/.zsh/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
 ##############################################################################
 # History Configuration
 ##############################################################################
 HISTSIZE=5000               #How many lines of history to keep in memory
-HISTFILE=~/.zsh_history     #Where to save history to disk
+HISTFILE=$HOME/.zsh_history #Where to save history to disk
 SAVEHIST=50000              #Number of history entries to save to disk
 #HISTDUP=erase               #Erase duplicates in the history file
 setopt    appendhistory     #Append history to the history file (no overwriting)
@@ -18,25 +15,15 @@ setopt    sharehistory      #Share history across terminals
 setopt    incappendhistory  #Immediately append to the history file, not just when a term is killed
 
 # >>> conda initialize >>>
-if [ -f "/home/gustavo/anaconda3/etc/profile.d/conda.sh" ]; then
-    . "/home/gustavo/anaconda3/etc/profile.d/conda.sh"
-else
-    export PATH="/home/gustavo/anaconda3/bin:$PATH"
+if [ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
+    . "$HOME/anaconda3/etc/profile.d/conda.sh"
+elif [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+    . "$HOME/miniconda3/etc/profile.d/conda.sh"
+elif [ -d "$HOME/anaconda3" ]; then
+    export PATH="$HOME/anaconda3/bin:$PATH"
+elif [ -d "$HOME/miniconda3" ]; then
+    export PATH="$HOME/miniconda3/bin:$PATH"
 fi
-
-# !! Contents within this block are managed by 'conda init' !!
-# __conda_setup="$('/home/gustavo/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-# if [ $? -eq 0 ]; then
-#     eval "$__conda_setup"
-# else
-#     if [ -f "/home/gustavo/anaconda3/etc/profile.d/conda.sh" ]; then
-#         . "/home/gustavo/anaconda3/etc/profile.d/conda.sh"
-#     else
-#         export PATH="/home/gustavo/anaconda3/bin:$PATH"
-#     fi
-# fi
-# unset __conda_setup
-# <<< conda initialize <<<
 
 # colourful ls
 alias ls="ls --color=auto"
@@ -94,12 +81,12 @@ PROMPT='%F{2}%n%f@%F{5}%m%f %F{4}%B%~%b%f %# '
 # add elapsed time to (right side) prompt
 # https://gist.github.com/knadh/123bca5cfdae8645db750bfb49cb44b0
 function preexec() {
-  timer=$(date +%s%3N)
+  timer=$(print -P %D{%s%3.})
 }
 
 function precmd() {
   if [ $timer ]; then
-    local now=$(date +%s%3N)
+    local now=$(print -P %D{%s%3.})
     local d_ms=$(($now-$timer))
     local d_s=$((d_ms / 1000))
     local ms=$((d_ms % 1000))
@@ -119,7 +106,7 @@ function precmd() {
   fi
 }
 
-# address capitalization errors
+# adress capitalization errors
 # https://superuser.com/questions/1092033/how-can-i-make-zsh-tab-completion-fix-capitalization-errors-for-directories-and
 autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
